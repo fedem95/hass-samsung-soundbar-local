@@ -1,7 +1,5 @@
 {
   "name": "Samsung Soundbar Local",
-  "filename": "samsung_soundbar_local.zip",
   "render_readme": true,
-  "zip_release": true,
-  "homeassistant": "2024.3.0"
+  "homeassistant": "2025.4.0"
 }

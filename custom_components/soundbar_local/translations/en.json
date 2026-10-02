@@ -1,0 +1,33 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Samsung soundbar",
+        "description": "Enable \"IP control\" for the soundbar in the SmartThings app first.",
+        "data": {
+          "host": "Host"
+        },
+        "data_description": {
+          "host": "IP address or hostname of the soundbar."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "invalid_auth": "The soundbar refused access. Check that \"IP control\" is enabled in the SmartThings app."
+    },
+    "abort": {
+      "already_configured": "Device is already configured"
+    }
+  },
+  "entity": {
+    "button": {
+      "woofer_plus": {
+        "name": "Subwoofer level up"
+      },
+      "woofer_minus": {
+        "name": "Subwoofer level down"
+      }
+    }
+  }
+}

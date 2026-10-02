@@ -1,0 +1,33 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Soundbar Samsung",
+        "description": "Prima attiva \"IP control\" per la soundbar nell'app SmartThings.",
+        "data": {
+          "host": "Host"
+        },
+        "data_description": {
+          "host": "Indirizzo IP o nome della soundbar."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Impossibile connettersi",
+      "invalid_auth": "La soundbar ha rifiutato l'accesso. Controlla che \"IP control\" sia attivo nell'app SmartThings."
+    },
+    "abort": {
+      "already_configured": "Il dispositivo è già configurato"
+    }
+  },
+  "entity": {
+    "button": {
+      "woofer_plus": {
+        "name": "Subwoofer più forte"
+      },
+      "woofer_minus": {
+        "name": "Subwoofer più piano"
+      }
+    }
+  }
+}
