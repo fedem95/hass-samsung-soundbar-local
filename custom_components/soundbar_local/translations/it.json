@@ -23,10 +23,10 @@
   "entity": {
     "button": {
       "woofer_plus": {
-        "name": "Subwoofer più forte"
+        "name": "Subwoofer +"
       },
       "woofer_minus": {
-        "name": "Subwoofer più piano"
+        "name": "Subwoofer −"
       }
     }
   }

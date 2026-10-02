@@ -23,10 +23,10 @@
   "entity": {
     "button": {
       "woofer_plus": {
-        "name": "Subwoofer level up"
+        "name": "Subwoofer +"
       },
       "woofer_minus": {
-        "name": "Subwoofer level down"
+        "name": "Subwoofer −"
       }
     }
   }

@@ -1,0 +1,12 @@
+{
+  "entity": {
+    "button": {
+      "woofer_plus": {
+        "default": "mdi:plus-circle-outline"
+      },
+      "woofer_minus": {
+        "default": "mdi:minus-circle-outline"
+      }
+    }
+  }
+}

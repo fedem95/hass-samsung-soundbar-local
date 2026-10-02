@@ -93,7 +93,7 @@ async def test_entities_and_commands(hass: HomeAssistant, soundbar: AsyncMock) -
     # Same unique ids as the original integration, so existing entities survive.
     assert ent_reg.async_get(MP).unique_id == "192.168.2.71"
     assert (
-        ent_reg.async_get("button.samsung_hw_q990d_subwoofer_level_up").unique_id
+        ent_reg.async_get("button.samsung_hw_q990d_subwoofer").unique_id
         == "192.168.2.71_woofer_plus"
     )
 
@@ -136,7 +136,7 @@ async def test_entities_and_commands(hass: HomeAssistant, soundbar: AsyncMock) -
     await hass.services.async_call(
         "button",
         "press",
-        {"entity_id": "button.samsung_hw_q990d_subwoofer_level_up"},
+        {"entity_id": "button.samsung_hw_q990d_subwoofer"},
         blocking=True,
     )
     soundbar.press_key.assert_awaited_with("WOOFER_PLUS")
