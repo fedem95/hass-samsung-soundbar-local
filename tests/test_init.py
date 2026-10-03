@@ -88,6 +88,12 @@ async def test_entities_and_commands(hass: HomeAssistant, soundbar: AsyncMock) -
     assert state.attributes["sound_mode"] == "Adaptive"
     assert state.attributes["codec"] == "MAT_PCM"
     assert "TV (eARC)" in state.attributes["source_list"]
+    assert state.attributes["sound_mode_list"] == [
+        "Adaptive",
+        "Standard",
+        "Surround",
+        "Game",
+    ]
 
     ent_reg = er.async_get(hass)
     # Same unique ids as the original integration, so existing entities survive.
@@ -118,10 +124,10 @@ async def test_entities_and_commands(hass: HomeAssistant, soundbar: AsyncMock) -
     await hass.services.async_call(
         "media_player",
         "select_sound_mode",
-        {"entity_id": MP, "sound_mode": "Clear Voice"},
+        {"entity_id": MP, "sound_mode": "Surround"},
         blocking=True,
     )
-    soundbar.set_sound_mode.assert_awaited_with("CLEARVOICE")
+    soundbar.set_sound_mode.assert_awaited_with("SURROUND")
     await hass.services.async_call(
         "media_player",
         "volume_mute",

@@ -17,7 +17,7 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .api import SoundbarError
-from .const import SOUND_MODES, SOURCES
+from .const import SOUND_MODES, SOUND_MODES_BY_MODEL, SOURCES
 from .coordinator import SoundbarConfigEntry, SoundbarCoordinator
 from .entity import SoundbarEntity
 
@@ -49,12 +49,13 @@ class SoundbarMediaPlayer(SoundbarEntity, MediaPlayerEntity):
         | MediaPlayerEntityFeature.SELECT_SOUND_MODE
     )
     _attr_source_list = list(SOURCES.values())
-    _attr_sound_mode_list = list(SOUND_MODES.values())
     # One step of the physical remote.
     _attr_volume_step = 0.01
 
     def __init__(self, coordinator: SoundbarCoordinator) -> None:
         super().__init__(coordinator, None)
+        codes = SOUND_MODES_BY_MODEL.get(coordinator.model or "", list(SOUND_MODES))
+        self._attr_sound_mode_list = [SOUND_MODES[code] for code in codes]
 
     @property
     def state(self) -> MediaPlayerState:
