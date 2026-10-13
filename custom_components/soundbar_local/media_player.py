@@ -17,7 +17,7 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .api import SoundbarError
-from .const import SOUND_MODES, SOUND_MODES_BY_MODEL, SOURCES
+from .const import REPORTED_SOURCES, SOUND_MODES, SOUND_MODES_BY_MODEL, SOURCES
 from .coordinator import SoundbarConfigEntry, SoundbarCoordinator
 from .entity import SoundbarEntity
 
@@ -74,7 +74,9 @@ class SoundbarMediaPlayer(SoundbarEntity, MediaPlayerEntity):
     @property
     def source(self) -> str | None:
         code = self.coordinator.data.source
-        return SOURCES.get(code, code) if code else None
+        if not code:
+            return None
+        return SOURCES.get(code) or REPORTED_SOURCES.get(code, code)
 
     @property
     def sound_mode(self) -> str | None:

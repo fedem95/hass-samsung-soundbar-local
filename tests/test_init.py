@@ -163,3 +163,15 @@ async def test_standby_is_off_and_outage_is_unavailable(
     async_fire_time_changed(hass, dt_util.utcnow() + SCAN_INTERVAL * 2)
     await hass.async_block_till_done()
     assert hass.states.get(MP).state == "unavailable"
+
+
+async def test_airplay_is_shown_but_not_selectable(
+    hass: HomeAssistant, soundbar: AsyncMock
+) -> None:
+    soundbar.state.return_value = replace(
+        soundbar.state.return_value, source="WIFI_AIRPLAY", codec="PCM"
+    )
+    await _setup(hass)
+    state = hass.states.get(MP)
+    assert state.attributes["source"] == "AirPlay"
+    assert "AirPlay" not in state.attributes["source_list"]

@@ -17,6 +17,12 @@ SOURCES = {
     "WIFI_IDLE": "Wi-Fi",
 }
 
+# Inputs the bar reports but that cannot be selected from here: a phone
+# starts them. Shown by name, never offered in the source list.
+REPORTED_SOURCES = {
+    "WIFI_AIRPLAY": "AirPlay",
+}
+
 # Every sound mode code the line uses -> name shown in Home Assistant.
 SOUND_MODES = {
     "ADAPTIVE": "Adaptive",
