@@ -23,6 +23,7 @@ from custom_components.soundbar_local.api import (
 from custom_components.soundbar_local.const import DOMAIN, SCAN_INTERVAL
 
 MP = "media_player.samsung_hw_q990d"
+VOLUME = "number.samsung_hw_q990d_volume"
 
 
 async def _setup(hass: HomeAssistant) -> MockConfigEntry:
@@ -150,17 +151,14 @@ async def test_entities_and_commands(hass: HomeAssistant, soundbar: AsyncMock) -
     assert await hass.config_entries.async_unload(entry.entry_id)
 
 
-async def test_standby_keeps_volume_and_outage_is_unavailable(
+async def test_standby_is_off_and_outage_is_unavailable(
     hass: HomeAssistant, soundbar: AsyncMock
 ) -> None:
     await _setup(hass)
     soundbar.state.return_value = replace(soundbar.state.return_value, power=False)
     async_fire_time_changed(hass, dt_util.utcnow() + SCAN_INTERVAL)
     await hass.async_block_till_done()
-    state = hass.states.get(MP)
-    assert state.state == "standby"
-    assert state.attributes["volume_level"] == 0.08
-    assert state.attributes["source"] == "TV (eARC)"
+    assert hass.states.get(MP).state == "off"
 
     soundbar.state.side_effect = SoundbarConnectionError("down")
     async_fire_time_changed(hass, dt_util.utcnow() + SCAN_INTERVAL * 2)
@@ -178,3 +176,17 @@ async def test_airplay_is_shown_but_not_selectable(
     state = hass.states.get(MP)
     assert state.attributes["source"] == "AirPlay"
     assert "AirPlay" not in state.attributes["source_list"]
+
+
+async def test_volume_number_works_in_standby(
+    hass: HomeAssistant, soundbar: AsyncMock
+) -> None:
+    soundbar.state.return_value = replace(soundbar.state.return_value, power=False)
+    await _setup(hass)
+    assert hass.states.get(MP).state == "off"
+    assert "volume_level" not in hass.states.get(MP).attributes
+    assert float(hass.states.get(VOLUME).state) == 8
+    await hass.services.async_call(
+        "number", "set_value", {"entity_id": VOLUME, "value": 12}, blocking=True
+    )
+    soundbar.set_volume.assert_awaited_with(12)

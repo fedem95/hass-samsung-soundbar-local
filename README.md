@@ -16,8 +16,9 @@ No cloud, no SmartThings integration in Home Assistant: everything stays on your
 |--------|--------------|
 | Media player | power on/off, volume set/step/mute, input, sound mode; the current codec as an attribute |
 | Buttons | subwoofer level up / down |
+| Volume (number) | the volume as a 0–100 slider, readable and settable in standby too |
 
-The bar answers in standby too, so the media player shows **standby** when the bar is off, still with its volume, input and sound mode, and **unavailable** only when it cannot be reached.
+The bar answers in standby too, so the media player shows **off** when the bar is off and **unavailable** only when it cannot be reached. Home Assistant hides a media player's volume while it is off; the Volume entity keeps showing it, and the bar accepts a new volume in standby.
 
 Inputs: TV (eARC), TV (ARC), HDMI 1, HDMI 2, Optical, Bluetooth, Wi-Fi. While a phone streams to the bar with AirPlay the input shows as **AirPlay**; it is not in the input list, because it cannot be selected from Home Assistant. The local API gives no track title, artist or artwork for it.
 Sound modes: Adaptive, Standard, Surround, Game, Movie, Music, Clear Voice, DTS Virtual:X. Models whose real list is known only show those: the HW-Q990D applies Adaptive, Standard, Surround and Game (it refuses Movie and Clear Voice and ignores Music, DTS Virtual:X and Night). Dolby Atmos is not a mode: the bar decodes it on its own, and the `codec` attribute shows what it receives (`MAT_PCM_ATMOS` for Atmos over eARC, `MAT_PCM` for multichannel without Atmos and while paused).
@@ -57,7 +58,7 @@ Upgrading from the original integration keeps your entities: domain and unique i
 * **Token renewal**: when the bar refuses the access token (after a reboot, for example) a new one is requested and the call is retried, instead of failing until Home Assistant restarts.
 * **Mandatory `Accept: application/json` header**: the bar answers `400 Bad Request` without it.
 * **Direct volume and mute**: `volumeControl` / `muteControl` set the value in one call instead of pressing volume up/down N times.
-* **Standby is standby, not unavailable**, and keeps volume, input and sound mode visible; errors from the bar are typed and surface as unavailable or as a failed action.
+* **Standby is off, not unavailable**; errors from the bar are typed and surface as unavailable or as a failed action.
 * **Connection check in the config flow**, device named after the model (`Samsung HW-Q990D`), readable input and sound mode names, English and Italian translations.
 * Modern Home Assistant APIs (`runtime_data`, typed coordinator, `asyncio.timeout`, `ConfigFlowResult`); the folder name now matches the `soundbar_local` domain.
 * Tests (`pytest` with `pytest-homeassistant-custom-component`).

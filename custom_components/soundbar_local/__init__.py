@@ -10,7 +10,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from .api import Soundbar, SoundbarError, model_from
 from .coordinator import SoundbarConfigEntry, SoundbarCoordinator
 
-PLATFORMS = [Platform.BUTTON, Platform.MEDIA_PLAYER]
+PLATFORMS = [Platform.BUTTON, Platform.MEDIA_PLAYER, Platform.NUMBER]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: SoundbarConfigEntry) -> bool:

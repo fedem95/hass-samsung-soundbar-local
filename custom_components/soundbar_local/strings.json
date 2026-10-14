@@ -28,6 +28,11 @@
       "woofer_minus": {
         "name": "Subwoofer −"
       }
+    },
+    "number": {
+      "volume": {
+        "name": "Volume"
+      }
     }
   }
 }
