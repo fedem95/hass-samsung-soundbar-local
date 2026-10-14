@@ -20,7 +20,7 @@ No cloud, no SmartThings integration in Home Assistant: everything stays on your
 
 The bar answers in standby too, so the media player shows **off** when the bar is off and **unavailable** only when it cannot be reached. Home Assistant hides a media player's volume while it is off; the Volume entity keeps showing it, and the bar accepts a new volume in standby.
 
-Inputs: TV (eARC), TV (ARC), HDMI 1, HDMI 2, Optical, Bluetooth, Wi-Fi. While a phone streams to the bar with AirPlay the input shows as **AirPlay**; it is not in the input list, because it cannot be selected from Home Assistant. The local API gives no track title, artist or artwork for it.
+Inputs: TV (eARC), TV (ARC), HDMI 1, HDMI 2, Optical, Bluetooth, Wi-Fi. **Configure** on the integration chooses which of them the input list offers and gives HDMI 1 and HDMI 2 a name of your own (e.g. the console plugged in there). While a phone streams to the bar with AirPlay the input shows as **AirPlay**; it is not in the input list, because it cannot be selected from Home Assistant. The local API gives no track title, artist or artwork for it.
 Sound modes: Adaptive, Standard, Surround, Game, Movie, Music, Clear Voice, DTS Virtual:X. Models whose real list is known only show those: the HW-Q990D applies Adaptive, Standard, Surround and Game (it refuses Movie and Clear Voice and ignores Music, DTS Virtual:X and Night). Dolby Atmos is not a mode: the bar decodes it on its own, and the `codec` attribute shows what it receives (`MAT_PCM_ATMOS` for Atmos over eARC, `MAT_PCM` for multichannel without Atmos and while paused).
 
 ---

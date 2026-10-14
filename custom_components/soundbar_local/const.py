@@ -17,6 +17,13 @@ SOURCES = {
     "WIFI_IDLE": "Wi-Fi",
 }
 
+# Options: inputs offered in the source list, and custom names for the
+# HDMI inputs (e.g. the console plugged into one of them).
+CONF_SOURCES = "sources"
+CONF_HDMI1_NAME = "hdmi1_name"
+CONF_HDMI2_NAME = "hdmi2_name"
+NAME_OPTIONS = {"HDMI_IN1": CONF_HDMI1_NAME, "HDMI_IN2": CONF_HDMI2_NAME}
+
 # Inputs the bar reports but that cannot be selected from here: a phone
 # starts them. Shown by name, never offered in the source list.
 REPORTED_SOURCES = {

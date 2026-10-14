@@ -190,3 +190,31 @@ async def test_volume_number_works_in_standby(
         "number", "set_value", {"entity_id": VOLUME, "value": 12}, blocking=True
     )
     soundbar.set_volume.assert_awaited_with(12)
+
+
+async def test_options_choose_inputs_and_name_hdmi(
+    hass: HomeAssistant, soundbar: AsyncMock
+) -> None:
+    soundbar.state.return_value = replace(
+        soundbar.state.return_value, source="HDMI_IN1"
+    )
+    entry = await _setup(hass)
+    result = await hass.config_entries.options.async_init(entry.entry_id)
+    assert result["type"] is FlowResultType.FORM
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"],
+        {"sources": ["HDMI_IN1", "HDMI_IN2", "BT", "WIFI_IDLE"], "hdmi1_name": " PS5 "},
+    )
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    await hass.async_block_till_done()
+
+    state = hass.states.get(MP)
+    assert state.attributes["source"] == "PS5"
+    assert state.attributes["source_list"] == ["PS5", "HDMI 2", "Bluetooth", "Wi-Fi"]
+    await hass.services.async_call(
+        "media_player",
+        "select_source",
+        {"entity_id": MP, "source": "PS5"},
+        blocking=True,
+    )
+    soundbar.select_source.assert_awaited_with("HDMI_IN1")

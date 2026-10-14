@@ -34,5 +34,22 @@
         "name": "Volume"
       }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Inputs",
+        "description": "Choose the inputs offered by the soundbar and name its HDMI inputs.",
+        "data": {
+          "sources": "Inputs to show",
+          "hdmi1_name": "Name of HDMI 1",
+          "hdmi2_name": "Name of HDMI 2"
+        },
+        "data_description": {
+          "hdmi1_name": "For example the console plugged in there. Leave empty to keep the default name.",
+          "hdmi2_name": "For example the console plugged in there. Leave empty to keep the default name."
+        }
+      }
+    }
   }
 }

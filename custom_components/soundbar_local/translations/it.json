@@ -34,5 +34,22 @@
         "name": "Volume"
       }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Ingressi",
+        "description": "Scegli gli ingressi della soundbar da mostrare e dai un nome agli ingressi HDMI.",
+        "data": {
+          "sources": "Ingressi da mostrare",
+          "hdmi1_name": "Nome di HDMI 1",
+          "hdmi2_name": "Nome di HDMI 2"
+        },
+        "data_description": {
+          "hdmi1_name": "Per esempio la console collegata lì. Lascia vuoto per il nome predefinito.",
+          "hdmi2_name": "Per esempio la console collegata lì. Lascia vuoto per il nome predefinito."
+        }
+      }
+    }
   }
 }

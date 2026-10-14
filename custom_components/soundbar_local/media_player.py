@@ -17,11 +17,17 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .api import SoundbarError
-from .const import REPORTED_SOURCES, SOUND_MODES, SOUND_MODES_BY_MODEL, SOURCES
+from .const import (
+    CONF_SOURCES,
+    NAME_OPTIONS,
+    REPORTED_SOURCES,
+    SOUND_MODES,
+    SOUND_MODES_BY_MODEL,
+    SOURCES,
+)
 from .coordinator import SoundbarConfigEntry, SoundbarCoordinator
 from .entity import SoundbarEntity
 
-_SOURCE_CODES = {name: code for code, name in SOURCES.items()}
 _SOUND_MODE_CODES = {name: code for code, name in SOUND_MODES.items()}
 
 
@@ -48,7 +54,6 @@ class SoundbarMediaPlayer(SoundbarEntity, MediaPlayerEntity):
         | MediaPlayerEntityFeature.SELECT_SOURCE
         | MediaPlayerEntityFeature.SELECT_SOUND_MODE
     )
-    _attr_source_list = list(SOURCES.values())
     # One step of the physical remote.
     _attr_volume_step = 0.01
 
@@ -56,6 +61,17 @@ class SoundbarMediaPlayer(SoundbarEntity, MediaPlayerEntity):
         super().__init__(coordinator, None)
         codes = SOUND_MODES_BY_MODEL.get(coordinator.model or "", list(SOUND_MODES))
         self._attr_sound_mode_list = [SOUND_MODES[code] for code in codes]
+        options = coordinator.config_entry.options
+        # Input code -> name shown, with the custom HDMI names if set.
+        self._source_names = {**SOURCES, **REPORTED_SOURCES}
+        for code, key in NAME_OPTIONS.items():
+            if name := (options.get(key) or "").strip():
+                self._source_names[code] = name
+        shown = options.get(CONF_SOURCES, list(SOURCES))
+        self._attr_source_list = [
+            self._source_names[code] for code in SOURCES if code in shown
+        ]
+        self._source_codes = {name: code for code, name in self._source_names.items()}
 
     @property
     def state(self) -> MediaPlayerState:
@@ -76,7 +92,7 @@ class SoundbarMediaPlayer(SoundbarEntity, MediaPlayerEntity):
         code = self.coordinator.data.source
         if not code:
             return None
-        return SOURCES.get(code) or REPORTED_SOURCES.get(code, code)
+        return self._source_names.get(code, code)
 
     @property
     def sound_mode(self) -> str | None:
@@ -117,7 +133,7 @@ class SoundbarMediaPlayer(SoundbarEntity, MediaPlayerEntity):
         await self._run(lambda: self.coordinator.soundbar.set_mute(mute), muted=mute)
 
     async def async_select_source(self, source: str) -> None:
-        code = _SOURCE_CODES.get(source, source)
+        code = self._source_codes.get(source, source)
         await self._run(
             lambda: self.coordinator.soundbar.select_source(code), source=code
         )
