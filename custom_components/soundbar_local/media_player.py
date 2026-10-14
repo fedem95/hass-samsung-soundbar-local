@@ -59,8 +59,12 @@ class SoundbarMediaPlayer(SoundbarEntity, MediaPlayerEntity):
 
     @property
     def state(self) -> MediaPlayerState:
+        # The bar keeps answering in standby, with its volume, input and sound
+        # mode. Standby rather than off keeps those attributes visible.
         return (
-            MediaPlayerState.ON if self.coordinator.data.power else MediaPlayerState.OFF
+            MediaPlayerState.ON
+            if self.coordinator.data.power
+            else MediaPlayerState.STANDBY
         )
 
     @property

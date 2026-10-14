@@ -150,14 +150,17 @@ async def test_entities_and_commands(hass: HomeAssistant, soundbar: AsyncMock) -
     assert await hass.config_entries.async_unload(entry.entry_id)
 
 
-async def test_standby_is_off_and_outage_is_unavailable(
+async def test_standby_keeps_volume_and_outage_is_unavailable(
     hass: HomeAssistant, soundbar: AsyncMock
 ) -> None:
     await _setup(hass)
     soundbar.state.return_value = replace(soundbar.state.return_value, power=False)
     async_fire_time_changed(hass, dt_util.utcnow() + SCAN_INTERVAL)
     await hass.async_block_till_done()
-    assert hass.states.get(MP).state == "off"
+    state = hass.states.get(MP)
+    assert state.state == "standby"
+    assert state.attributes["volume_level"] == 0.08
+    assert state.attributes["source"] == "TV (eARC)"
 
     soundbar.state.side_effect = SoundbarConnectionError("down")
     async_fire_time_changed(hass, dt_util.utcnow() + SCAN_INTERVAL * 2)
